@@ -6,6 +6,7 @@ import static christmas.Discount.Discount.getTotalPrice;
 import christmas.Discount.Discount;
 import christmas.model.Item;
 import christmas.model.UserOrders;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 
 public class OutputView {
@@ -28,7 +29,7 @@ public class OutputView {
 
     public static void printBeforeTotalPrice(UserOrders userOrders) {
         System.out.println("<할인 전 총주문 금액>");
-        System.out.println(getTotalPrice(userOrders) + "원");
+        System.out.println(String.format("%,d", getTotalPrice(userOrders)) + "원");
     }
 
     public static void printBadge(int date, UserOrders userOrders) {
@@ -75,13 +76,13 @@ public class OutputView {
     public static void printTotalDiscount(int date, UserOrders userOrders) {
         System.out.println("<총혜택 금액>");
         int totalDiscount = Discount.getTotalDiscount(date, userOrders);
-        System.out.println(totalDiscount + "원");
+        System.out.println(String.format("%,d", totalDiscount) + "원");
     }
 
     public static void printAfterTotalPrice(int date, UserOrders userOrders) {
         System.out.println("<할인 후 예상 결제 금액>");
         int totalPrice = (getTotalPrice(userOrders) - getTotalDiscount(date, userOrders));
-        System.out.println(totalPrice + "원");
+        System.out.println(String.format("%,d", totalPrice) + "원");
     }
 
     private static boolean printChristmasDiscount(int date, UserOrders userOrders) {
@@ -89,7 +90,7 @@ public class OutputView {
         if (christmasDiscount == 0) {
             return false;
         }
-        System.out.println("크리스마스 디데이 할인: -" + christmasDiscount + "원");
+        System.out.println("크리스마스 디데이 할인: -" + String.format("%,d", christmasDiscount) + "원");
         return true;
     }
 
@@ -98,7 +99,7 @@ public class OutputView {
         if (weekDiscount == 0) {
             return false;
         }
-        System.out.println("평일 할인: -" + weekDiscount + "원");
+        System.out.println("평일 할인: -" + String.format("%,d", weekDiscount) + "원");
         return true;
     }
 
@@ -107,7 +108,7 @@ public class OutputView {
         if (weekendDiscount == 0) {
             return false;
         }
-        System.out.println("주말 할인: -" + weekendDiscount + "원");
+        System.out.println("주말 할인: -" + String.format("%,d", weekendDiscount) + "원");
         return true;
     }
 
@@ -116,7 +117,7 @@ public class OutputView {
         if (specialDiscount == 0) {
             return false;
         }
-        System.out.println("특별 할인: -" + specialDiscount + "원");
+        System.out.println("특별 할인: -" + String.format("%,d", specialDiscount) + "원");
         return true;
     }
 
@@ -125,7 +126,7 @@ public class OutputView {
         if (givenItem == null) {
             return false;
         }
-        System.out.println("증정 이벤트: -" + givenItem.getPrice() + "원");
+        System.out.println("증정 이벤트: -" + String.format("%,d", givenItem.getPrice()) + "원");
         return true;
     }
 }
