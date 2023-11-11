@@ -69,6 +69,21 @@ public class Discount {
         return totalPrice;
     }
 
+    public static int getTotalDiscount(int date, UserOrders userOrders) {
+        int christmasDiscount = getChristmasDiscount(date, userOrders);
+        int weekDiscount = getWeekDiscount(date, userOrders);
+        int weekendDiscount = getWeekendDiscount(date, userOrders);
+        int specialDiscount = getSpecialDiscount(date, userOrders);
+        int givenItemPrice = 0;
+        Item givenItem = getGivenEvent(userOrders);
+
+        if (givenItem != null) {
+            givenItemPrice = givenItem.getPrice();
+        }
+
+        return (christmasDiscount + weekDiscount + weekendDiscount + specialDiscount + givenItemPrice);
+    }
+
     private static boolean checkIsWeekend(int date) {
         Calinder calinder = new Calinder();
         ArrayList<Integer> weekend = calinder.getWeekend();
