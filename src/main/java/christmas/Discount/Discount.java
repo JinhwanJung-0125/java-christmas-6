@@ -10,13 +10,7 @@ import java.util.Objects;
 
 public class Discount {
     private static boolean validateCanJoinEvent(UserOrders userOrders) {
-        int totalPrice = 0;
-        HashMap<Item, Integer> orders = userOrders.getOrders();
-        for (Item item : orders.keySet()) {
-            totalPrice += (item.getPrice() * orders.get(item));
-        }
-
-        return totalPrice >= 10000;
+        return (getTotalPrice(userOrders) >= 10000);
     }
 
     private static int getChristmasDiscount(int date) {
@@ -48,6 +42,14 @@ public class Discount {
         }
 
         return 0;
+    }
+
+    private static Item getGivenEvent(UserOrders userOrders) {
+        if (getTotalPrice(userOrders) >= 120000) {
+            return new Item("샴페인", 25000);
+        }
+
+        return null;
     }
 
     private static boolean checkIsWeekend(int date) {
@@ -108,5 +110,15 @@ public class Discount {
         }
 
         return false;
+    }
+
+    private static int getTotalPrice(UserOrders userOrders) {
+        int totalPrice = 0;
+        HashMap<Item, Integer> orders = userOrders.getOrders();
+        for (Item item : orders.keySet()) {
+            totalPrice += (item.getPrice() * orders.get(item));
+        }
+
+        return totalPrice;
     }
 }
