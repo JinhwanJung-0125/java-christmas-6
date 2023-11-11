@@ -42,11 +42,31 @@ public class Discount {
         return 0;
     }
 
+    private static int getSpecialDiscount(int date) {
+        if (checkIsSpecialDate(date)) {
+            return 1000;
+        }
+
+        return 0;
+    }
+
     private static boolean checkIsWeekend(int date) {
         Calinder calinder = new Calinder();
         ArrayList<Integer> weekend = calinder.getWeekend();
         for (Integer weekendDate : weekend) {
             if (date == weekendDate) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean checkIsSpecialDate(int date) {
+        Calinder calinder = new Calinder();
+        ArrayList<Integer> specialDate = calinder.getSpecialDate();
+        for (Integer special : specialDate) {
+            if (date == special) {
                 return true;
             }
         }
