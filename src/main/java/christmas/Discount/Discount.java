@@ -20,7 +20,7 @@ public class Discount {
     }
 
     private static int getChristmasDiscount(int date) {
-        if(date > 25) {
+        if (date > 25) {
             return 0;
         }
         return (1000 + (100 * (date - 1)));
@@ -34,10 +34,18 @@ public class Discount {
         return 0;
     }
 
+    private static int getWeekendDiscount(int date, UserOrders userOrders) {
+        if (checkIsWeekend(date)) {
+            return (2023 * getMainNum(userOrders));
+        }
+
+        return 0;
+    }
+
     private static boolean checkIsWeekend(int date) {
         Calinder calinder = new Calinder();
         ArrayList<Integer> weekend = calinder.getWeekend();
-        for(Integer weekendDate : weekend) {
+        for (Integer weekendDate : weekend) {
             if (date == weekendDate) {
                 return true;
             }
@@ -50,7 +58,20 @@ public class Discount {
         Menu menu = new Menu();
         int retVal = 0;
 
-        for(Item item : menu.getDessertList()) {
+        for (Item item : menu.getDessertList()) {
+            if (checkThisItemIsExist(item, userOrders)) {
+                retVal += userOrders.getOrders().get(item);
+            }
+        }
+
+        return retVal;
+    }
+
+    private static int getMainNum(UserOrders userOrders) {
+        Menu menu = new Menu();
+        int retVal = 0;
+
+        for (Item item : menu.getMainList()) {
             if (checkThisItemIsExist(item, userOrders)) {
                 retVal += userOrders.getOrders().get(item);
             }
