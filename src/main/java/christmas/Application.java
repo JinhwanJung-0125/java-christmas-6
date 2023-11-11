@@ -16,9 +16,10 @@ public class Application {
         System.out.println(date);
         OutputView.printOrders(orders);
         OutputView.printBeforeTotalPrice(orders);
+        OutputView.printGivenItem(givenItem);
         OutputView.printDiscountHistory(date, orders);
         OutputView.printTotalDiscount(date, orders);
-        OutputView.printGivenItem(givenItem);
+        OutputView.printAfterTotalPrice(date, orders);
         OutputView.printBadge(date, orders);
     }
 }

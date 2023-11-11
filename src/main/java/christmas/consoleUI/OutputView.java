@@ -1,5 +1,6 @@
 package christmas.consoleUI;
 
+import static christmas.Discount.Discount.getTotalDiscount;
 import static christmas.Discount.Discount.getTotalPrice;
 
 import christmas.Discount.Discount;
@@ -24,8 +25,10 @@ public class OutputView {
 
     public static void printBadge(int date, UserOrders userOrders) {
         int totalDiscount = Discount.getTotalDiscount(date, userOrders);
-
         System.out.println("<12월 이벤트 배지>");
+        if (totalDiscount < 5000) {
+            System.out.println("없음");
+        }
         if (5000 <= totalDiscount && totalDiscount < 10000) {
             System.out.println("별");
         }
@@ -50,16 +53,15 @@ public class OutputView {
 
     public static void printDiscountHistory(int date, UserOrders userOrders) {
         System.out.println("<혜택 내역>");
+        boolean christmas = printChristmasDiscount(date, userOrders);
+        boolean week = printWeekDiscount(date, userOrders);
+        boolean weekend = printWeekendDiscount(date, userOrders);
+        boolean special = printSpecialDiscount(date, userOrders);
+        boolean given = printGivenItem(userOrders);
 
-        if (getTotalPrice(userOrders) == 0) {
+        if (!(christmas || week || weekend || special || given)) {
             System.out.println("없음");
-            return;
         }
-        printChristmasDiscount(date, userOrders);
-        printWeekDiscount(date, userOrders);
-        printWeekendDiscount(date, userOrders);
-        printSpecialDiscount(date, userOrders);
-        printGivenItem(userOrders);
     }
 
     public static void printTotalDiscount(int date, UserOrders userOrders) {
@@ -68,43 +70,54 @@ public class OutputView {
         System.out.println(totalDiscount + "원");
     }
 
-    private static void printChristmasDiscount(int date, UserOrders userOrders) {
+    public static void printAfterTotalPrice(int date, UserOrders userOrders) {
+        System.out.println("<할인 후 예상 결제 금액>");
+        int totalPrice = (getTotalPrice(userOrders) - getTotalDiscount(date, userOrders));
+        System.out.println(totalPrice + "원");
+    }
+
+    private static boolean printChristmasDiscount(int date, UserOrders userOrders) {
         int christmasDiscount = Discount.getChristmasDiscount(date, userOrders);
         if (christmasDiscount == 0) {
-            return;
+            return false;
         }
         System.out.println("크리스마스 디데이 할인: -" + christmasDiscount + "원");
+        return true;
     }
 
-    private static void printWeekDiscount(int date, UserOrders userOrders) {
+    private static boolean printWeekDiscount(int date, UserOrders userOrders) {
         int weekDiscount = Discount.getWeekDiscount(date, userOrders);
         if (weekDiscount == 0) {
-            return;
+            return false;
         }
         System.out.println("평일 할인: -" + weekDiscount + "원");
+        return true;
     }
 
-    private static void printWeekendDiscount(int date, UserOrders userOrders) {
+    private static boolean printWeekendDiscount(int date, UserOrders userOrders) {
         int weekendDiscount = Discount.getWeekendDiscount(date, userOrders);
         if (weekendDiscount == 0) {
-            return;
+            return false;
         }
         System.out.println("주말 할인: -" + weekendDiscount + "원");
+        return true;
     }
 
-    private static void printSpecialDiscount(int date, UserOrders userOrders) {
+    private static boolean printSpecialDiscount(int date, UserOrders userOrders) {
         int specialDiscount = Discount.getSpecialDiscount(date, userOrders);
         if (specialDiscount == 0) {
-            return;
+            return false;
         }
         System.out.println("특별 할인: -" + specialDiscount + "원");
+        return true;
     }
 
-    private static void printGivenItem(UserOrders userOrders) {
+    private static boolean printGivenItem(UserOrders userOrders) {
         Item givenItem = Discount.getGivenEvent(userOrders);
         if (givenItem == null) {
-            return;
+            return false;
         }
         System.out.println("증정 이벤트: -" + givenItem.getPrice() + "원");
+        return true;
     }
 }
