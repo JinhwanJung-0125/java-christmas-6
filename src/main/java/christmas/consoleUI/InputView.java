@@ -52,7 +52,7 @@ public class InputView {
 
     private static void checkDuplicated(int currIdx, String[] checkers) {
         for (int checkerIdx = 0; checkerIdx < checkers.length; checkerIdx++) {
-            if(currIdx == checkerIdx) {
+            if (currIdx == checkerIdx) {
                 continue;
             }
             String checkString = splitString(checkers[currIdx], "-")[0];
@@ -170,18 +170,18 @@ public class InputView {
         Menu menu = new Menu();
         ArrayList<ArrayList<Item>> menuTypes = menu.getMenuLists();
         int sum = 0;
-        for(int idx = 0; idx < 3; idx++) {
+        for (int idx = 0; idx < 3; idx++) {
             sum += getItemNum(menuTypes.get(idx), orders);
         }
 
-        if(sum == 0) {
+        if (sum == 0) {
             throw new IllegalArgumentException("유효하지 않은 주문입니다. 다시 입력해 주세요.");
         }
     }
 
     private static int getItemNum(ArrayList<Item> items, String[] orders) {
         int sum = 0;
-        for(Item item : items) {
+        for (Item item : items) {
             sum += getOrderNum(item, orders);
         }
 
@@ -190,9 +190,9 @@ public class InputView {
 
     private static int getOrderNum(Item item, String[] orders) {
         int retVal = 0;
-        for(String order : orders) {
+        for (String order : orders) {
             String[] splitedOrder = splitString(order, "-");
-            if(Objects.equals(splitedOrder[0], item.getName())) {
+            if (Objects.equals(splitedOrder[0], item.getName())) {
                 retVal += convertStringToInt(splitedOrder[1]);
             }
         }
