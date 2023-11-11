@@ -29,4 +29,15 @@ public class OutputView {
             System.out.println("산타");
         }
     }
+
+    public static void printGivenItem(Item givenItem) {
+        System.out.println("<증정 메뉴>");
+
+        if (givenItem != null) {
+            System.out.println(givenItem.getName());
+            return;
+        }
+
+        System.out.println("없음");
+    }
 }
