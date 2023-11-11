@@ -1,19 +1,19 @@
 package christmas.model;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class UserOrders {
-    private ArrayList<Item> orders;
+    private HashMap<Item, Integer> orders;
 
     public UserOrders() {
-        this.orders = new ArrayList<Item>();
+        this.orders = new HashMap<Item, Integer>();
     }
 
-    public void addOrder(Item item) {
-        this.orders.add(item);
+    public void addOrder(Item item, Integer num) {
+        this.orders.put(item, num);
     }
 
-    public ArrayList<Item> getOrders() {
+    public HashMap<Item, Integer> getOrders() {
         return this.orders;
     }
 }

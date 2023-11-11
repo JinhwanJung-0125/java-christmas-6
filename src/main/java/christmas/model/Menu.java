@@ -70,4 +70,14 @@ public class Menu {
     public ArrayList<Item> getBeverageList() {
         return this.beverageList;
     }
+
+    public ArrayList<ArrayList<Item>> getMenuLists() {
+        ArrayList<ArrayList<Item>> menuTypes = new ArrayList<ArrayList<Item>>(4);
+        menuTypes.add(this.appetizerList);
+        menuTypes.add(this.mainList);
+        menuTypes.add(this.dessertList);
+        menuTypes.add(this.beverageList);
+
+        return menuTypes;
+    }
 }
