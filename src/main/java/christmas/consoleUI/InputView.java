@@ -1,10 +1,13 @@
 package christmas.consoleUI;
 
+import static christmas.utility.Util.splitString;
+import static christmas.utility.Util.checkDuplicated;
+import static christmas.utility.Util.convertStringToInt;
+
 import camp.nextstep.edu.missionutils.Console;
 import christmas.model.UserOrders;
 import christmas.model.Menu;
 import christmas.model.Item;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -31,36 +34,6 @@ public class InputView {
         validateDuplicatedOrder(orders);
 
         return makeUserOrders(orders);
-    }
-
-    private static String[] splitString(String input, String splitter) {
-        try {
-            input = input.replaceAll(" ", "");
-            return input.split(splitter, 0);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("유효하지 않은 주문입니다.다시 입력해 주세요.");
-        }
-    }
-
-    private static int convertStringToInt(String input) {
-        try {
-            return Integer.parseInt(input);
-        } catch (NumberFormatException e) {
-            throw new NumberFormatException("올바른 숫자 형식이 아닙니다!");
-        }
-    }
-
-    private static void checkDuplicated(int currIdx, String[] checkers) {
-        for (int checkerIdx = 0; checkerIdx < checkers.length; checkerIdx++) {
-            if (currIdx == checkerIdx) {
-                continue;
-            }
-            String checkString = splitString(checkers[currIdx], "-")[0];
-            String checker = splitString(checkers[checkerIdx], "-")[0];
-            if (Objects.equals(checkString, checker)) {
-                throw new IllegalArgumentException("유효하지 않은 주문입니다. 다시 입력해 주세요.");
-            }
-        }
     }
 
     private static void validateDate(int date) {
@@ -191,9 +164,9 @@ public class InputView {
     private static int getOrderNum(Item item, String[] orders) {
         int retVal = 0;
         for (String order : orders) {
-            String[] splitedOrder = splitString(order, "-");
-            if (Objects.equals(splitedOrder[0], item.getName())) {
-                retVal += convertStringToInt(splitedOrder[1]);
+            String[] splitOrder = splitString(order, "-");
+            if (Objects.equals(splitOrder[0], item.getName())) {
+                retVal += convertStringToInt(splitOrder[1]);
             }
         }
 
@@ -210,40 +183,13 @@ public class InputView {
         UserOrders retVal = new UserOrders();
 
         for (String order : orders) {
-            String[] oneOrder = order.split("-", 0);
+            String[] oneOrder = splitString(order, "-");
             String menuName = oneOrder[0];
             int menuNum = convertStringToInt(oneOrder[1]);
 
-            Item item = makeItem(menuName);
-            retVal.addOrder(item, menuNum);
+            retVal.addOrder(menuName, menuNum);
         }
 
         return retVal;
-    }
-
-    private static Item makeItem(String menuName) {
-        int menuPrice = findMenuPrice(menuName);
-        return new Item(menuName, menuPrice);
-    }
-
-    private static int findMenuPrice(String menuName) {
-        Menu menu = new Menu();
-        for (ArrayList<Item> menuList : menu.getMenuLists()) {
-            int retVal = searchList(menuName, menuList);
-            if (retVal != 0) {
-                return retVal;
-            }
-        }
-
-        throw new IllegalArgumentException("유효하지 않은 주문입니다. 다시 입력해 주세요.");
-    }
-
-    private static int searchList(String menuName, ArrayList<Item> list) {
-        for (Item item : list) {
-            if (Objects.equals(menuName, item.getName())) {
-                return item.getPrice();
-            }
-        }
-        return 0;
     }
 }

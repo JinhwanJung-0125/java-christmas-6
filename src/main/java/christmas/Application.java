@@ -1,5 +1,6 @@
 package christmas;
 
+import christmas.Discount.Discount;
 import christmas.consoleUI.InputView;
 import christmas.consoleUI.OutputView;
 import christmas.model.Item;
@@ -10,8 +11,12 @@ public class Application {
         // TODO: 프로그램 구현
         int date = InputView.readDate();
         UserOrders orders = InputView.readMenu();
+        Item givenItem = Discount.getGivenEvent(orders);
 
         System.out.println(date);
         OutputView.printOrders(orders);
+        OutputView.printDiscountHistory(date, orders);
+        OutputView.printGivenItem(givenItem);
+        OutputView.printBadge(date, orders);
     }
 }

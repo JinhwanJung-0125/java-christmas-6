@@ -1,5 +1,7 @@
 package christmas.Discount;
 
+import static christmas.utility.Util.findMenuPrice;
+
 import christmas.model.Calinder;
 import christmas.model.Item;
 import christmas.model.Menu;
@@ -61,9 +63,9 @@ public class Discount {
 
     public static int getTotalPrice(UserOrders userOrders) {
         int totalPrice = 0;
-        HashMap<Item, Integer> orders = userOrders.getOrders();
-        for (Item item : orders.keySet()) {
-            totalPrice += (item.getPrice() * orders.get(item));
+        HashMap<String, Integer> orders = userOrders.getOrders();
+        for (String name : orders.keySet()) {
+            totalPrice += (findMenuPrice(name) * orders.get(name));
         }
 
         return totalPrice;
@@ -114,7 +116,7 @@ public class Discount {
 
         for (Item item : menu.getDessertList()) {
             if (checkThisItemIsExist(item, userOrders)) {
-                retVal += userOrders.getOrders().get(item);
+                retVal += userOrders.getOrders().get(item.getName());
             }
         }
 
@@ -127,7 +129,7 @@ public class Discount {
 
         for (Item item : menu.getMainList()) {
             if (checkThisItemIsExist(item, userOrders)) {
-                retVal += userOrders.getOrders().get(item);
+                retVal += userOrders.getOrders().get(item.getName());
             }
         }
 
@@ -139,8 +141,8 @@ public class Discount {
     }
 
     private static boolean checkThisItemIsExist(Item item, UserOrders userOrders) {
-        for (Item userItem : userOrders.getOrders().keySet()) {
-            if (Objects.equals(item.getName(), userItem.getName())) {
+        for (String userItemName : userOrders.getOrders().keySet()) {
+            if (Objects.equals(item.getName(), userItemName)) {
                 return true;
             }
         }

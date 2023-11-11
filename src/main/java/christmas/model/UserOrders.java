@@ -3,17 +3,17 @@ package christmas.model;
 import java.util.HashMap;
 
 public class UserOrders {
-    private HashMap<Item, Integer> orders;
+    private HashMap<String, Integer> orders;
 
     public UserOrders() {
-        this.orders = new HashMap<Item, Integer>();
+        this.orders = new HashMap<String, Integer>();
     }
 
-    public void addOrder(Item item, Integer num) {
-        this.orders.put(item, num);
+    public void addOrder(String name, Integer num) {
+        this.orders.put(name, num);
     }
 
-    public HashMap<Item, Integer> getOrders() {
+    public HashMap<String, Integer> getOrders() {
         return this.orders;
     }
 }

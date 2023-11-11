@@ -7,11 +7,11 @@ import java.util.HashMap;
 
 public class OutputView {
     public static void printOrders(UserOrders userOrders) {
-        HashMap<Item, Integer> orders = userOrders.getOrders();
+        HashMap<String, Integer> orders = userOrders.getOrders();
 
         System.out.println("<주문 메뉴>");
-        for (Item order : orders.keySet()) {
-            System.out.println(order.getName() + " " + orders.get(order) + "개");
+        for (String order : orders.keySet()) {
+            System.out.println(order + " " + orders.get(order) + "개");
         }
     }
 
@@ -39,5 +39,59 @@ public class OutputView {
         }
 
         System.out.println("없음");
+    }
+
+    public static void printDiscountHistory(int date, UserOrders userOrders) {
+        System.out.println("<혜택 내역>");
+
+        if (Discount.getTotalPrice(userOrders) == 0) {
+            System.out.println("없음");
+            return;
+        }
+        printChristmasDiscount(date, userOrders);
+        printWeekDiscount(date, userOrders);
+        printWeekendDiscount(date, userOrders);
+        printSpecialDiscount(date, userOrders);
+        printGivenItem(userOrders);
+    }
+
+    private static void printChristmasDiscount(int date, UserOrders userOrders) {
+        int christmasDiscount = Discount.getChristmasDiscount(date, userOrders);
+        if (christmasDiscount == 0) {
+            return;
+        }
+        System.out.println("크리스마스 디데이 할인: -" + christmasDiscount + "원");
+    }
+
+    private static void printWeekDiscount(int date, UserOrders userOrders) {
+        int weekDiscount = Discount.getWeekDiscount(date, userOrders);
+        if (weekDiscount == 0) {
+            return;
+        }
+        System.out.println("평일 할인: -" + weekDiscount + "원");
+    }
+
+    private static void printWeekendDiscount(int date, UserOrders userOrders) {
+        int weekendDiscount = Discount.getWeekendDiscount(date, userOrders);
+        if (weekendDiscount == 0) {
+            return;
+        }
+        System.out.println("주말 할인: -" + weekendDiscount + "원");
+    }
+
+    private static void printSpecialDiscount(int date, UserOrders userOrders) {
+        int specialDiscount = Discount.getSpecialDiscount(date, userOrders);
+        if (specialDiscount == 0) {
+            return;
+        }
+        System.out.println("특별 할인: -" + specialDiscount + "원");
+    }
+
+    private static void printGivenItem(UserOrders userOrders) {
+        Item givenItem = Discount.getGivenEvent(userOrders);
+        if (givenItem == null) {
+            return;
+        }
+        System.out.println("증정 이벤트: -" + givenItem.getPrice() + "원");
     }
 }
