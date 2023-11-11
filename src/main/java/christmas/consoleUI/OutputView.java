@@ -1,5 +1,7 @@
 package christmas.consoleUI;
 
+import static christmas.Discount.Discount.getTotalPrice;
+
 import christmas.Discount.Discount;
 import christmas.model.Item;
 import christmas.model.UserOrders;
@@ -17,6 +19,7 @@ public class OutputView {
 
     public static void printBeforeTotalPrice(UserOrders userOrders) {
         System.out.println("<할인 전 총주문 금액>");
+        System.out.println(getTotalPrice(userOrders) + "원");
     }
 
     public static void printBadge(int date, UserOrders userOrders) {
@@ -48,7 +51,7 @@ public class OutputView {
     public static void printDiscountHistory(int date, UserOrders userOrders) {
         System.out.println("<혜택 내역>");
 
-        if (Discount.getTotalPrice(userOrders) == 0) {
+        if (getTotalPrice(userOrders) == 0) {
             System.out.println("없음");
             return;
         }

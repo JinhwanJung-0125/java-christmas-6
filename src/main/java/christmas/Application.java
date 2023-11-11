@@ -15,6 +15,7 @@ public class Application {
 
         System.out.println(date);
         OutputView.printOrders(orders);
+        OutputView.printBeforeTotalPrice(orders);
         OutputView.printDiscountHistory(date, orders);
         OutputView.printTotalDiscount(date, orders);
         OutputView.printGivenItem(givenItem);

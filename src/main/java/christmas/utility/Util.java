@@ -2,6 +2,7 @@ package christmas.utility;
 
 import christmas.model.Item;
 import christmas.model.Menu;
+import christmas.model.UserOrders;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -35,6 +36,19 @@ public class Util {
             }
         }
     }
+
+    public static int getTotalPrice(UserOrders userOrders) {
+        int totalPrice = 0;
+        for (String menuName : userOrders.getOrders().keySet()) {
+            int menuPrice = findMenuPrice(menuName);
+            int menuNum = userOrders.getOrders().get(menuName);
+
+            totalPrice += (menuPrice * menuNum);
+        }
+
+        return totalPrice;
+    }
+
     public static int findMenuPrice(String menuName) {
         Menu menu = new Menu();
         for (ArrayList<Item> menuList : menu.getMenuLists()) {
