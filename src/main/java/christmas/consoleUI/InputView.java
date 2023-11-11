@@ -4,6 +4,7 @@ import camp.nextstep.edu.missionutils.Console;
 import christmas.model.UserOrders;
 import christmas.model.Menu;
 import christmas.model.Item;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -26,6 +27,7 @@ public class InputView {
 
         validateMenuName(orders);
         validateMenuNum(orders);
+        validateOrderOnlyBeverage(orders);
         validateDuplicatedOrder(orders);
 
         return makeUserOrders(orders);
@@ -48,9 +50,13 @@ public class InputView {
         }
     }
 
-    private static void checkDuplicated(String checkString, String[] checkers) {
-        for (String checker : checkers) {
-            checker = splitString(checker, "-")[0];
+    private static void checkDuplicated(int currIdx, String[] checkers) {
+        for (int checkerIdx = 0; checkerIdx < checkers.length; checkerIdx++) {
+            if(currIdx == checkerIdx) {
+                continue;
+            }
+            String checkString = splitString(checkers[currIdx], "-")[0];
+            String checker = splitString(checkers[checkerIdx], "-")[0];
             if (Objects.equals(checkString, checker)) {
                 throw new IllegalArgumentException("유효하지 않은 주문입니다. 다시 입력해 주세요.");
             }
@@ -160,11 +166,43 @@ public class InputView {
         }
     }
 
-    private static void validateDuplicatedOrder(String[] orders) {
-        for (String oneOrder : orders) {
-            String order = splitString(oneOrder, "-")[0];
+    private static void validateOrderOnlyBeverage(String[] orders) {
+        Menu menu = new Menu();
+        ArrayList<ArrayList<Item>> menuTypes = menu.getMenuLists();
+        int sum = 0;
+        for(int idx = 0; idx < 3; idx++) {
+            sum += getItemNum(menuTypes.get(idx), orders);
+        }
 
-            checkDuplicated(order, orders);
+        if(sum == 0) {
+            throw new IllegalArgumentException("유효하지 않은 주문입니다. 다시 입력해 주세요.");
+        }
+    }
+
+    private static int getItemNum(ArrayList<Item> items, String[] orders) {
+        int sum = 0;
+        for(Item item : items) {
+            sum += getOrderNum(item, orders);
+        }
+
+        return sum;
+    }
+
+    private static int getOrderNum(Item item, String[] orders) {
+        int retVal = 0;
+        for(String order : orders) {
+            String[] splitedOrder = splitString(order, "-");
+            if(Objects.equals(splitedOrder[0], item.getName())) {
+                retVal += convertStringToInt(splitedOrder[1]);
+            }
+        }
+
+        return retVal;
+    }
+
+    private static void validateDuplicatedOrder(String[] orders) {
+        for (int currIdx = 0; currIdx < orders.length; currIdx++) {
+            checkDuplicated(currIdx, orders);
         }
     }
 

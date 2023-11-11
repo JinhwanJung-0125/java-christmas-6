@@ -1,6 +1,7 @@
 package christmas;
 
 import christmas.consoleUI.InputView;
+import christmas.consoleUI.OutputView;
 import christmas.model.Item;
 import christmas.model.UserOrders;
 
@@ -11,8 +12,6 @@ public class Application {
         UserOrders orders = InputView.readMenu();
 
         System.out.println(date);
-        for(Item order : orders.getOrders().keySet()) {
-            System.out.println(order.getName() + " " + order.getPrice() + " " + orders.getOrders().get(order));
-        }
+        OutputView.printOrders(orders);
     }
 }
