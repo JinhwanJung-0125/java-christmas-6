@@ -9,47 +9,64 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class Discount {
-    private static boolean validateCanJoinEvent(UserOrders userOrders) {
-        return (getTotalPrice(userOrders) >= 10000);
-    }
-
-    private static int getChristmasDiscount(int date) {
-        if (date > 25) {
-            return 0;
-        }
-        return (1000 + (100 * (date - 1)));
-    }
-
-    private static int getWeekDiscount(int date, UserOrders userOrders) {
-        if (!checkIsWeekend(date)) {
-            return (2023 * getDessertNum(userOrders));
+    public static int getChristmasDiscount(int date, UserOrders userOrders) {
+        if (validateCanJoinEvent(userOrders)) {
+            if (date <= 25) {
+                return (1000 + (100 * (date - 1)));
+            }
         }
 
         return 0;
     }
 
-    private static int getWeekendDiscount(int date, UserOrders userOrders) {
-        if (checkIsWeekend(date)) {
-            return (2023 * getMainNum(userOrders));
+    public static int getWeekDiscount(int date, UserOrders userOrders) {
+        if (validateCanJoinEvent(userOrders)) {
+            if (!checkIsWeekend(date)) {
+                return (2023 * getDessertNum(userOrders));
+            }
         }
 
         return 0;
     }
 
-    private static int getSpecialDiscount(int date) {
-        if (checkIsSpecialDate(date)) {
-            return 1000;
+    public static int getWeekendDiscount(int date, UserOrders userOrders) {
+        if (validateCanJoinEvent(userOrders)) {
+            if (checkIsWeekend(date)) {
+                return (2023 * getMainNum(userOrders));
+            }
         }
 
         return 0;
     }
 
-    private static Item getGivenEvent(UserOrders userOrders) {
-        if (getTotalPrice(userOrders) >= 120000) {
-            return new Item("샴페인", 25000);
+    public static int getSpecialDiscount(int date, UserOrders userOrders) {
+        if (validateCanJoinEvent(userOrders)) {
+            if (checkIsSpecialDate(date)) {
+                return 1000;
+            }
+        }
+
+        return 0;
+    }
+
+    public static Item getGivenEvent(UserOrders userOrders) {
+        if (validateCanJoinEvent(userOrders)) {
+            if (getTotalPrice(userOrders) >= 120000) {
+                return new Item("샴페인", 25000);
+            }
         }
 
         return null;
+    }
+
+    public static int getTotalPrice(UserOrders userOrders) {
+        int totalPrice = 0;
+        HashMap<Item, Integer> orders = userOrders.getOrders();
+        for (Item item : orders.keySet()) {
+            totalPrice += (item.getPrice() * orders.get(item));
+        }
+
+        return totalPrice;
     }
 
     private static boolean checkIsWeekend(int date) {
@@ -102,6 +119,10 @@ public class Discount {
         return retVal;
     }
 
+    private static boolean validateCanJoinEvent(UserOrders userOrders) {
+        return (getTotalPrice(userOrders) >= 10000);
+    }
+
     private static boolean checkThisItemIsExist(Item item, UserOrders userOrders) {
         for (Item userItem : userOrders.getOrders().keySet()) {
             if (Objects.equals(item.getName(), userItem.getName())) {
@@ -110,15 +131,5 @@ public class Discount {
         }
 
         return false;
-    }
-
-    private static int getTotalPrice(UserOrders userOrders) {
-        int totalPrice = 0;
-        HashMap<Item, Integer> orders = userOrders.getOrders();
-        for (Item item : orders.keySet()) {
-            totalPrice += (item.getPrice() * orders.get(item));
-        }
-
-        return totalPrice;
     }
 }
