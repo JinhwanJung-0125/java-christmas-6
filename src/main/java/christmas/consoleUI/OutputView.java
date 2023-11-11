@@ -15,6 +15,10 @@ public class OutputView {
         }
     }
 
+    public static void printBeforeTotalPrice(UserOrders userOrders) {
+        System.out.println("<할인 전 총주문 금액>");
+    }
+
     public static void printBadge(int date, UserOrders userOrders) {
         int totalDiscount = Discount.getTotalDiscount(date, userOrders);
 
@@ -53,6 +57,12 @@ public class OutputView {
         printWeekendDiscount(date, userOrders);
         printSpecialDiscount(date, userOrders);
         printGivenItem(userOrders);
+    }
+
+    public static void printTotalDiscount(int date, UserOrders userOrders) {
+        System.out.println("<총혜택 금액>");
+        int totalDiscount = Discount.getTotalDiscount(date, userOrders);
+        System.out.println(totalDiscount + "원");
     }
 
     private static void printChristmasDiscount(int date, UserOrders userOrders) {
